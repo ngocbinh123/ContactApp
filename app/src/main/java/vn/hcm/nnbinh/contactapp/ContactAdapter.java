@@ -12,7 +12,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import vn.hcm.nnbinh.contactapp.db.Contact;
+import vn.hcm.nnbinh.contactapp.ui.CircleImageView;
+import vn.hcm.nnbinh.contactapp.utils.CommonUtils;
 
 /**
  * Created by nguyenngocbinh on 5/15/17.
@@ -79,9 +83,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     class ContactViewHolder extends RecyclerView.ViewHolder {
         private final TextView mName;
         private final TextView mSectionName;
-
+        @BindView(R.id.thumbnail)
+        CircleImageView thumbnail;
         public ContactViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(itemView);
             mName = (TextView) itemView.findViewById(R.id.name);
             mSectionName = (TextView) itemView.findViewById(R.id.section_title);
 
@@ -91,6 +97,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             mName.setText(pItem.getName());
             mSectionName.setText(pSection);
             mSectionName.setVisibility(bShowSection ? View.VISIBLE : View.GONE);
+            CommonUtils.loadImage(itemView.getContext(), pItem.getThumbnail(), thumbnail);
         }
     }
 }
