@@ -3,7 +3,8 @@
     <item
         android:id="@+id/mn_item_back"
         android:orderInCategory="100"
-        android:title="@string/mn_item_back" />
+        android:title="@string/mn_item_back"
+        android:icon ="@mipmap/ic_arrow_previous" />
     <item
         android:id="@+id/mn_item_done"
         android:orderInCategory="200"
