@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mn_item_back"
+        android:orderInCategory="100"
+        android:title="@string/mn_item_back" />
+    <item
+        android:id="@+id/mn_item_done"
+        android:orderInCategory="200"
+        android:title="@string/mn_item_done" />
+</menu>

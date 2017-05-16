@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Contact App</string>
+    <string name="act_contact_list">Contact List</string>
+    <string name="title_contact_list">Selected Contacts</string>
+    <string name="mn_item_back">Back</string>
+    <string name="mn_item_done">Done</string>
+    <string name="lbl_to_contact">To:</string>
+</resources>
