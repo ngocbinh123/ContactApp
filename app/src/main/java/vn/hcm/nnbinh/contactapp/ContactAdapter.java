@@ -83,13 +83,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     class ContactViewHolder extends RecyclerView.ViewHolder {
         private final TextView mName;
         private final TextView mSectionName;
-        @BindView(R.id.thumbnail)
-        CircleImageView thumbnail;
+        private CircleImageView thumbnail;
         public ContactViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(itemView);
             mName = (TextView) itemView.findViewById(R.id.name);
             mSectionName = (TextView) itemView.findViewById(R.id.section_title);
+            thumbnail = (CircleImageView) itemView.findViewById(R.id.thumbnail);
 
         }
 
