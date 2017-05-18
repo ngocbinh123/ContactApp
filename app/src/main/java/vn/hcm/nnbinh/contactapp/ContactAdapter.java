@@ -12,7 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import vn.hcm.nnbinh.contactapp.db.Contact;
 import vn.hcm.nnbinh.contactapp.ui.CircleImageView;
@@ -32,7 +31,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         mContacts = contacts;
         fillSections();
     }
-
 
     private void fillSections() {
         mMapIndex = new LinkedHashMap<String, Integer>();
@@ -54,6 +52,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         mSections = new String[mSectionList.size()];
         mSectionList.toArray(mSections);
     }
+
 
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

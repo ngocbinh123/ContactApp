@@ -6,13 +6,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import vn.hcm.nnbinh.contactapp.ContactAdapter;
 import vn.hcm.nnbinh.contactapp.R;
+import vn.hcm.nnbinh.contactapp.app.DBManager;
 import vn.hcm.nnbinh.contactapp.db.Contact;
-import vn.hcm.nnbinh.contactapp.db.DBProvider;
 
 /**
  * Created by nguyenngocbinh on 5/15/17.
@@ -20,8 +21,9 @@ import vn.hcm.nnbinh.contactapp.db.DBProvider;
 
 public class ContactListActivity extends BaseActivity{
     private Toolbar toolbar;
-    private RecyclerView mRecyclerView;
     private ContactAdapter mAdapter;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,15 +37,20 @@ public class ContactListActivity extends BaseActivity{
         setupRecyclerView();
     }
 
+    /**
+     * seteu
+     * */
     private void setupRecyclerView() {
         mAdapter = new ContactAdapter(getContacts());
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private ArrayList<Contact> getContacts() {
-        return DBProvider.get(this).getContacts();
+    /**
+     * get contact list from db
+     * */
+    private List<Contact> getContacts() {
+        return DBManager.get(this).getContacts();
     }
 }

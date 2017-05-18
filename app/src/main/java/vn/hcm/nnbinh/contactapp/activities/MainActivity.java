@@ -1,6 +1,5 @@
 package vn.hcm.nnbinh.contactapp.activities;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
@@ -9,6 +8,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import vn.hcm.nnbinh.contactapp.R;
+import vn.hcm.nnbinh.contactapp.db.DBAsync;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -28,7 +28,7 @@ public class MainActivity extends BaseActivity {
         if (isNeedRequestPermission(READ_CONTACTS))
             requestPermission(READ_CONTACTS, PICK_READ_CONTACT);
         else
-            init();
+            runAsyncDB();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PICK_READ_CONTACT &&
                 grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED)
-            init();
+            runAsyncDB();
         else
             quitApp();
     }
@@ -55,7 +55,10 @@ public class MainActivity extends BaseActivity {
         goToActivityResult(ContactListActivity.class, MAIN_ACTIVITY_REQUEST_CODE);
     }
 
-    private void init() {
-
+    /**
+     * sync db in background
+     * */
+    private void runAsyncDB(){
+        new DBAsync(this).execute();
     }
 }

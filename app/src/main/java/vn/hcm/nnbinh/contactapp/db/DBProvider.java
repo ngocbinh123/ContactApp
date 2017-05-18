@@ -6,10 +6,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import io.realm.RealmList;
+import vn.hcm.nnbinh.contactapp.utils.Cons;
 
 /**
  * Created by nguyenngocbinh on 5/15/17.
@@ -27,6 +31,9 @@ public class DBProvider {
         return new DBProvider(context);
     }
 
+    /**
+     * get contact list
+     * */
     public ArrayList<Contact> getContacts() {
         ArrayList<Contact> conList = new ArrayList<>();
         Cursor cursor = mResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
@@ -42,7 +49,7 @@ public class DBProvider {
                 int hasPhoneNumber = cursor.getInt(colHasPhoneNumber);
                 Contact contact = new Contact(id, name, getThumbnail(id),hasPhoneNumber, null);
                 if (hasPhoneNumber > 0)
-                    contact.setPhoneList(getPhoneNumber(id));
+                    contact.setPhoneNumbers(getPhoneNumber(id));
                 conList.add(contact);
             } while (cursor.moveToNext());
         }
@@ -56,20 +63,28 @@ public class DBProvider {
         return conList;
     }
 
-    public ArrayList<String> getPhoneNumber(long id) {
-        ArrayList<String> phoneNumbers = new ArrayList<>();
-        Cursor cursor = mResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",new String[]{ String.valueOf(id) }, null);
+    /**
+     * get phone number of contact by id
+     * */
+    public RealmList<PhoneNumber> getPhoneNumber(long id) {
+        RealmList<PhoneNumber>  phoneNumbers = new RealmList<>();
+        Cursor cursor = mResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
+                new String[]{ String.valueOf(id) }, null);
        if (cursor != null && cursor.moveToFirst())
            do {
                int colNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-               String contactNumber = cursor.getString(colNumber);
-               phoneNumbers.add(contactNumber);
+               String number = cursor.getString(colNumber);
+               phoneNumbers.add(new PhoneNumber(Cons.PHONE_NUM_TYPE.HOME.name(), number));
            }while (cursor.moveToNext());
 
         return phoneNumbers;
     }
 
-    public Uri getThumbnail(long id) {
+    /**
+     * get thumbnail of contact by id
+     * */
+    public String getThumbnail(long id) {
         try {
             Cursor cur = mResolver.query(ContactsContract.Data.CONTENT_URI, null,
                             ContactsContract.Data.CONTACT_ID
@@ -80,20 +95,15 @@ public class DBProvider {
                                     + "='"
                                     + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE
                                     + "'", null, null);
-            if (cur != null) {
-                if (!cur.moveToFirst()) {
-                    return null; // no photo
-                }
-            } else {
-                return null; // error in cursor process
-            }
+            if (cur == null || !cur.moveToFirst())
+                return null;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
             return null;
         }
         Uri person = ContentUris.withAppendedId(
                 ContactsContract.Contacts.CONTENT_URI, id);
         return Uri.withAppendedPath(person,
-                ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+                ContactsContract.Contacts.Photo.CONTENT_DIRECTORY).toString();
     }
 }

@@ -16,7 +16,7 @@ import vn.hcm.nnbinh.contactapp.ui.CircleImageView;
 
 public class CommonUtils {
 
-    public static void loadImage(Context context, Uri url, CircleImageView imageView) {
+    public static void loadImage(Context context, String url, CircleImageView imageView) {
         try {
             Glide.with(context).load(url)
                     .error(R.mipmap.ic_user)

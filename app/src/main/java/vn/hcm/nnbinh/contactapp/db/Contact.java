@@ -1,27 +1,33 @@
 package vn.hcm.nnbinh.contactapp.db;
 
-import android.net.Uri;
-
 import java.util.List;
+
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by nguyenngocbinh on 5/15/17.
  */
 
-public class Contact {
+public class Contact extends RealmObject{
+    @PrimaryKey
     private long id;
     private String name;
-    private Uri thumbnail;
+    private String thumbnail;
     private boolean isOnline = false;
     private int hasPhoneNumber;
-    private List<String> phoneList;
+    private RealmList<PhoneNumber> phoneNumbers =new RealmList<PhoneNumber>();
 
-    public Contact(long id, String name, Uri thumbnail, int hasPhoneNumber, List<String> phoneList) {
+    public Contact(long id, String name, String thumbnail, int hasPhoneNumber, RealmList<PhoneNumber> phoneNumbers) {
         this.id = id;
         this.name = name;
         this.thumbnail = thumbnail;
         this.hasPhoneNumber = hasPhoneNumber;
-        this.phoneList = phoneList;
+        this.phoneNumbers = phoneNumbers;
+    }
+
+    public Contact() {
     }
 
     public long getId() {
@@ -56,19 +62,21 @@ public class Contact {
         this.hasPhoneNumber = hasPhoneNumber;
     }
 
-    public List<String> getPhoneList() {
-        return phoneList;
-    }
-
-    public void setPhoneList(List<String> phoneList) {
-        this.phoneList = phoneList;
-    }
-
-    public Uri getThumbnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(Uri thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
+
+
+    public RealmList<PhoneNumber> getPhoneNumbers() {
+        return phoneNumbers;
+    }
+
+    public void setPhoneNumbers(RealmList<PhoneNumber> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
+    }
+
 }

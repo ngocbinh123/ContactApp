@@ -4,13 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
-import android.util.Log;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import vn.hcm.nnbinh.contactapp.R;
+import vn.hcm.nnbinh.contactapp.app.ContactApplication;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
@@ -20,6 +15,11 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = BaseActivity.class.getName();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     public void goToActivityResult(Class activityClass, int requestCode) {
         Intent intent = new Intent(this, activityClass);
