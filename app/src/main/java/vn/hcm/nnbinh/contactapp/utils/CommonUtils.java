@@ -15,7 +15,7 @@ import vn.hcm.nnbinh.contactapp.ui.CircleImageView;
  */
 
 public class CommonUtils {
-
+    private static final String TAG = CommonUtils.class.getName();
     public static void loadImage(Context context, String url, CircleImageView imageView) {
         try {
             Glide.with(context).load(url)
@@ -26,7 +26,17 @@ public class CommonUtils {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageView);
         }catch (Exception e) {
-            Log.e("CommonUtils", e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
+    }
+
+    public static String getSection(String name) {
+        String section = "";
+        if (name != null && name != "")
+            section = name.substring(0,1).toUpperCase();
+
+        if (section == "" || !section.matches("[^abc]"))
+            section = "##";
+        return section;
     }
 }

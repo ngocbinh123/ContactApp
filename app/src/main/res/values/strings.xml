@@ -5,4 +5,5 @@
     <string name="mn_item_back">Back</string>
     <string name="mn_item_done">Done</string>
     <string name="lbl_to_contact">To:</string>
+    <string name="lbl_search">Search ...</string>
 </resources>

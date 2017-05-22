@@ -11,6 +11,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmMigration;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import vn.hcm.nnbinh.contactapp.db.Contact;
 
 /**
@@ -64,7 +65,7 @@ public class DBManager {
      * get contacts from db
      */
     public List<Contact> getContacts() {
-        RealmResults<Contact> results = getRealm().where(Contact.class).findAll();
+        RealmResults<Contact> results = getRealm().where(Contact.class).findAllSorted("section", Sort.ASCENDING);
         return results;
     }
 

@@ -2,38 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp">
     <TextView
         android:id="@+id/section_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="#000"
-        tools:text="A"/>
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        style="@style/tv_single"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:background="@color/colorPrimary"
+        tools:text="A"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp"/>
+    <LinearLayout
+        android:id="@+id/view_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+        <CheckBox
+            android:id="@+id/chkbox_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <vn.hcm.nnbinh.contactapp.ui.CircleImageView
             android:id="@+id/thumbnail"
-            android:layout_width="32dp"
-            android:layout_height="32dp">
+            android:layout_width="@dimen/thumbnail_size"
+            android:layout_height="@dimen/thumbnail_size">
 
         </vn.hcm.nnbinh.contactapp.ui.CircleImageView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
             <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="#000"
-                tools:text="Contact Name"/>
+                style="@style/tv_single"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tv_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/tv_single"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

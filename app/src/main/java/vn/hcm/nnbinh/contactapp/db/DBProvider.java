@@ -6,14 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds;
+import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.Data;
 import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import io.realm.RealmList;
-import vn.hcm.nnbinh.contactapp.utils.Cons;
 
 /**
  * Created by nguyenngocbinh on 5/15/17.
@@ -36,30 +34,25 @@ public class DBProvider {
      * */
     public ArrayList<Contact> getContacts() {
         ArrayList<Contact> conList = new ArrayList<>();
-        Cursor cursor = mResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        Cursor cursor = mResolver.query(Contacts.CONTENT_URI, null, null, null, Contacts.DISPLAY_NAME + " ASC");
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                int colId = cursor.getColumnIndex(ContactsContract.Contacts._ID);
-                int colName = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-                int colHasPhoneNumber = cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
+
+                int colId = cursor.getColumnIndex(Contacts._ID);
+                int colName = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
+                int colHasPhoneNumber = cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER);
 
                 long id = cursor.getLong(colId);
                 String name = cursor.getString(colName);
                 int hasPhoneNumber = cursor.getInt(colHasPhoneNumber);
-                Contact contact = new Contact(id, name, getThumbnail(id),hasPhoneNumber, null);
+                Contact contact = new Contact(id, name, getThumbnail(id), hasPhoneNumber, null);
                 if (hasPhoneNumber > 0)
                     contact.setPhoneNumbers(getPhoneNumber(id));
                 conList.add(contact);
             } while (cursor.moveToNext());
         }
 
-        Collections.sort(conList, new Comparator<Contact>() {
-            @Override
-            public int compare(Contact lhs, Contact rhs) {
-                return lhs.getName().compareToIgnoreCase(rhs.getName());
-            }
-        });
         return conList;
     }
 
@@ -68,14 +61,17 @@ public class DBProvider {
      * */
     public RealmList<PhoneNumber> getPhoneNumber(long id) {
         RealmList<PhoneNumber>  phoneNumbers = new RealmList<>();
-        Cursor cursor = mResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
-                ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
+        Cursor cursor = mResolver.query(CommonDataKinds.Phone.CONTENT_URI,null,
+                CommonDataKinds.Phone.CONTACT_ID +" = ?",
                 new String[]{ String.valueOf(id) }, null);
        if (cursor != null && cursor.moveToFirst())
            do {
-               int colNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+               int colType = cursor.getColumnIndex(CommonDataKinds.Phone.TYPE);
+               int colNumber = cursor.getColumnIndex(CommonDataKinds.Phone.NUMBER);
+
+               int type = cursor.getInt(colType);
                String number = cursor.getString(colNumber);
-               phoneNumbers.add(new PhoneNumber(Cons.PHONE_NUM_TYPE.HOME.name(), number));
+               phoneNumbers.add(new PhoneNumber(type, number));
            }while (cursor.moveToNext());
 
         return phoneNumbers;
@@ -86,15 +82,9 @@ public class DBProvider {
      * */
     public String getThumbnail(long id) {
         try {
-            Cursor cur = mResolver.query(ContactsContract.Data.CONTENT_URI, null,
-                            ContactsContract.Data.CONTACT_ID
-                                    + "="
-                                    + id
-                                    + " AND "
-                                    + ContactsContract.Data.MIMETYPE
-                                    + "='"
-                                    + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE
-                                    + "'", null, null);
+            String selection =  Data.CONTACT_ID + "=" + id + " AND " +
+                    Data.MIMETYPE + "='" + CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'";
+            Cursor cur = mResolver.query(Data.CONTENT_URI, null, selection, null, null);
             if (cur == null || !cur.moveToFirst())
                 return null;
         } catch (Exception e) {

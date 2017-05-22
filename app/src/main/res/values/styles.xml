@@ -13,4 +13,10 @@
         <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
 
+    <style name="tv_single">
+        <item name="android:singleLine">true</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="android:color">@color/colorBack</item>
+    </style>
+
 </resources>

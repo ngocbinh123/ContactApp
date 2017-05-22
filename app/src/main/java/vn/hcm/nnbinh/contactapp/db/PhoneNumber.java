@@ -8,10 +8,10 @@ import io.realm.annotations.Ignore;
  */
 
 public class PhoneNumber extends RealmObject{
-    private String type;
+    private int type;
     private String phoneNumber;
 
-    public PhoneNumber(String type, String phoneNumber) {
+    public PhoneNumber(int type, String phoneNumber) {
         this.type = type;
         this.phoneNumber = phoneNumber;
     }
@@ -19,11 +19,11 @@ public class PhoneNumber extends RealmObject{
     public PhoneNumber() {
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

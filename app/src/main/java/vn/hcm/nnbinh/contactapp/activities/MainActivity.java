@@ -8,6 +8,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import vn.hcm.nnbinh.contactapp.R;
+import vn.hcm.nnbinh.contactapp.app.ContactApplication;
 import vn.hcm.nnbinh.contactapp.db.DBAsync;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -32,6 +33,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PICK_READ_CONTACT &&
@@ -47,7 +53,6 @@ public class MainActivity extends BaseActivity {
         if (requestCode == MAIN_ACTIVITY_REQUEST_CODE) {
 
         }
-
     }
 
     @OnClick(R.id.act_contact)
