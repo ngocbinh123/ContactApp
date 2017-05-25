@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,6 +28,7 @@ public class ContactListActivity extends BaseActivity{
     private Toolbar toolbar;
     private ContactListAdapter mAdapter;
     private SelectedAdapter mSelectedAdapter;
+    private List<Contact> mContacts;
     @BindView(R.id.recycler_view)
     RecyclerView mContactView;
     @BindView(R.id.view_select_list)
@@ -68,7 +70,19 @@ public class ContactListActivity extends BaseActivity{
 
             @Override
             public void afterTextChanged(Editable s) {
-                mAdapter.getFilter().filter(s);
+                //mAdapter.getFilter().filter(s);
+                ArrayList<Contact> contacts = new ArrayList<Contact>();
+                if (s.toString() == "")
+                    mAdapter.setData(mContacts);
+                else {
+                    for (Contact con: mContacts) {
+                        if (con.getName().toLowerCase().contains(s.toString().toLowerCase())) {
+                            contacts.add(con);
+                        }
+                    }
+                    mAdapter.setData(contacts);
+                }
+                mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -77,7 +91,8 @@ public class ContactListActivity extends BaseActivity{
      * setup contact view
      * */
     private void setupRecyclerView() {
-        mAdapter = new ContactListAdapter(getContacts());
+        mContacts = getContacts();
+        mAdapter = new ContactListAdapter(mContacts);
         mAdapter.setListener(new ContactListAdapter.OnClicklistener() {
             @Override
             public void onClick(Contact contact, int position, boolean isSelected) {
